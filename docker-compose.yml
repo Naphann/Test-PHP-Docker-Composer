@@ -5,8 +5,6 @@ services:
     build: .
     depends_on:
       - db
-    volumes:
-      - ./src:/var/www/html
     ports:
       - "8080:80"
 
