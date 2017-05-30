@@ -28,30 +28,17 @@ class Teacher {
     var $mobile;
     var $email;
 
-    function __construct($properties=array()) {
+    function __construct($properties = array()) {
         $this->tid = 0;
         foreach ($properties as $prop => $val) {
+            // TODO: remove null value from this
             $this->$prop = $val;
         }
     }
 
-    function load($tid) {
-        $pdo = DB::getPDO();
-        $params = array(
-            ':tid' => $tid
-        );
-
-        $stmt = $pdo->prepare('SELECT * FROM Teacher
-                                       WHERE tid = :tid'
-        );
-        $stmt->execute($params);
-        $props = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return new Teacher($props);
-    }
-
     function edit($properties) {
         foreach ($properties as $prop => $val) {
+            // TODO: remove null value from this
             $this->$prop = $val;
         }
     }
@@ -61,7 +48,7 @@ class Teacher {
             // this teacher doesn't exists before => insert
             $pdo = DB::getPDO();
             $params = DB::objectToParams($this, array('tid'));
-            
+
             $insertFields = DB::objectToInsertParams($this, array('tid'));
             $insertValues = DB::objectToValueParams($this, array('tid'));
 
@@ -92,4 +79,47 @@ class Teacher {
         }
     }
 
+    static function load($tid) {
+        $pdo = DB::getPDO();
+        $params = array(
+            ':tid' => $tid
+        );
+
+        $stmt = $pdo->prepare('SELECT * FROM Teacher
+                                       WHERE tid = :tid'
+        );
+        $stmt->execute($params);
+        $props = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return new Teacher($props);
+    }
+
+    static function getByName($name) {
+        $pdo = DB::getPDO();
+        $params = array(
+            ':name' => $name
+        );
+
+        $stmt = $pdo->prepare('SELECT * FROM Teacher
+                                       WHERE name = :name');
+        $stmt->execute($params);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $teachers = array();
+        foreach ($rows as $row) {
+            $teachers[] = new Teacher($row);
+        }
+        return $teachers;
+    }
+
+    static function loadAll($start = 0, $limit = 50) {
+        $pdo = DB::getPDO();
+        $stmt = $pdo->prepare("SELECT * FROM Teacher LIMIT $start, $limit");
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $teachers = array();
+        foreach ($rows as $row) {
+            $teachers[] = new Teacher($row);
+        }
+        return $teachers;
+    }
 }

@@ -3,6 +3,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git zip unzip
 RUN a2enmod rewrite
 RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install mcrypt
 # ADD ./src /var/www/html/
 # ADD ./config /var/www/html/config
 # RUN curl --silent --show-error https://getcomposer.org/installer | php
