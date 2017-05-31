@@ -79,6 +79,22 @@ class Teacher {
         }
     }
 
+    function delete() {
+        try {
+            $pdo = DB::getPDO();
+            $params = array(
+                ':tid' => $this->tid
+            );
+            $stmt = $pdo->prepare('DELETE FROM Teacher
+                                     WHERE tid = :tid');
+            $stmt->execute($params);
+            $affectedRows = $stmt->rowCount();
+            return $affectedRows > 0;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
     static function load($tid) {
         $pdo = DB::getPDO();
         $params = array(
@@ -90,7 +106,9 @@ class Teacher {
         );
         $stmt->execute($params);
         $props = $stmt->fetch(PDO::FETCH_ASSOC);
-
+        if (!is_array($props)) {
+            return false;
+        }
         return new Teacher($props);
     }
 
@@ -122,4 +140,31 @@ class Teacher {
         }
         return $teachers;
     }
+
+//    static function deleteById($id) {
+//        $pdo = DB::getPDO();
+//        $params = array(
+//            ':tid' => $id
+//        );
+//        $stmt = $pdo->prepare('DELETE FROM Teacher WHERE tid = :tid');
+//        $numAffected = $stmt->execute($params);
+////        if ($numAffected == 0)
+//    }
+
+    static function loadByQuery($queryProps, $start = 0, $limit = 50) {
+        $searchParams = DB::objectToQueryField($queryProps);
+        $queryParams = DB::objectToQueryParams($queryProps);
+        $pdo = DB::getPDO();
+        $stmt = $pdo->prepare("SELECT tid, name, lastname, oldname, oldlastname FROM Teacher
+                                                                               WHERE $searchParams
+                                                                               LIMIT $start, $limit");
+        $stmt->execute($queryParams);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $teachers = array();
+        foreach ($rows as $row) {
+            $teachers[] = new Teacher($row);
+        }
+        return $teachers;
+    }
+
 }

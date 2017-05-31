@@ -66,4 +66,25 @@ class DB {
 
         return join(', ', $arr);
     }
+
+    static function objectToQueryField($obj) {
+        $arr = array();
+        foreach ($obj as $key => $val) {
+            $arr[] = "$key LIKE :$key";
+        }
+        return join(' AND ', $arr);
+    }
+
+    static function objectToQueryParams($obj) {
+        $arr = array();
+        foreach ($obj as $key => $val) {
+            if (is_numeric($val)) {
+                $newval = $val;
+            } else {
+                $newval = "%$val%";
+            }
+            $arr[":$key"] = $newval;
+        }
+        return $arr;
+    }
 }
