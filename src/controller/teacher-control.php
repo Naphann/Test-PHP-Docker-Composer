@@ -15,8 +15,7 @@ Flight::route('/api/teacher', function () {
     // TODO: need authorization
     // TODO: in browser unreadable char but in POSTMAN it's fine ?
     $teachers = Teacher::loadAll();
-    header('Content-type: application/json');
-    echo json_encode($teachers, JSON_UNESCAPED_UNICODE);
+    Flight::json($teachers);
 });
 
 Flight::route('GET /api/teacher/@id', function ($id) {
@@ -24,13 +23,10 @@ Flight::route('GET /api/teacher/@id', function ($id) {
     $teacher = Teacher::load($id);
     if ($teacher === false) {
         // error no id found
-        header('Content-type: application/json', true, 400);
-        echo json_encode(array(
-            'error' => 'tid not found'
-        ), JSON_UNESCAPED_UNICODE);
+        $resp = array('error' => 'tid not found');
+        Flight::json($resp, 500);
     } else {
-        header('Content-type: application/json');
-        echo json_encode($teacher, JSON_UNESCAPED_UNICODE);
+        Flight::json($teacher);
     }
 });
 
@@ -42,15 +38,11 @@ Flight::route('PUT /api/teacher/@id', function ($id) {
         $teacher->edit($body);
         $result = $teacher->save();
         if ($result <= 0) {
-            header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
-            echo json_encode(array(
-                'error' => 'something went wrong'
-            ));
+            $resp = array('error' => 'something went wrong', 'success' => false);
+            Flight::json($resp, 500);
         } else {
-            header('Content-type: application/json');
-            echo json_encode(array(
-                'success' => true
-            ), JSON_UNESCAPED_UNICODE);
+            $resp = array('success' => true);
+            Flight::json($resp);
         }
     }
 });
@@ -60,8 +52,7 @@ Flight::route('POST /api/teacher/search', function () {
     // TODO: authorization
     $body = json_decode(Flight::request()->getBody());
     $teachers = Teacher::loadByQuery($body);
-    header('Content-type: application/json');
-    echo json_encode($teachers, JSON_UNESCAPED_UNICODE);
+    Flight::json($teachers);
 });
 
 Flight::route('DELETE /api/teacher/@id', function ($id) {

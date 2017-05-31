@@ -7,6 +7,8 @@ services:
       - db
     volumes:
       - ./src:/var/www/html
+      - ./static:/var/www/html/static
+      - ./node_modules:/var/www/html/node_modules
     ports:
       - "8080:80"
 

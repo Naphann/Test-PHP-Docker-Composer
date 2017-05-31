@@ -12,7 +12,7 @@
     <h1>This is Admin pages</h1>
     {{ message }}
 </div>
-<script src="/static/src/admin.js"></script>
+<script src="/static/dist/admin-bundle.js"></script>
 </body>
 </html>
 

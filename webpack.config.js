@@ -1,30 +1,72 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-    // This is the "main" file which should include all other modules
-    entry: {
-        admin: './static/src/admin.js',
-        home: './static/src/home.js',
-        detail: './static/src/detail.js'
-    },
-    // Where should the compiled file go?
-    output: {
-        // To the `dist` folder
-        path: path.resolve(__dirname, 'static/dist'),
-        // With the filename `build.js` so it's dist/build.js
-        filename: '[name]-bundle.js'
-    },
-    module: {
-        // Special compilation rules
-        loaders: [
-            {
-                // Ask webpack to check: If this file ends with .js, then apply some transforms
-                test: /\.js$/,
-                // Transform it with babel
-                loader: 'babel-loader',
-                // don't transform node_modules folder (which don't need to be compiled)
-                exclude: /node_modules/
-            }
-        ]
+  entry: {
+    admin: './static/src/admin.js',
+    home: './static/src/home.js',
+    detail: './static/src/detail.js'
+  },
+  output: {
+    path: path.resolve(__dirname, '/static/dist'),
+    filename: '[name]-bundle.js'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          loaders: {}
+          // other vue-loader options go here
+        }
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]?[hash]'
+        }
+      }
+    ]
+  },
+  resolve: {
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js'
     }
+  },
+  devServer: {
+    historyApiFallback: true,
+    noInfo: true
+  },
+  performance: {
+    hints: false
+  },
+  devtool: '#eval-source-map'
+};
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports.devtool = '#source-map';
+  // http://vue-loader.vuejs.org/en/workflow/production.html
+  module.exports.plugins = (module.exports.plugins || []).concat([
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+      compress: {
+        warnings: false
+      }
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
+    })
+  ])
 }

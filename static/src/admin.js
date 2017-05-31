@@ -1,8 +1,14 @@
 import Vue from 'vue'
 
+
+
 new Vue({
-  el: 'body',
+  el: '#console-app',
   data: {
-    message: "Hello Vue"
+    teachers: []
+  },
+  methods: {
+
   }
 });
+
