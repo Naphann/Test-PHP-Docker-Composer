@@ -141,16 +141,6 @@ class Teacher {
         return $teachers;
     }
 
-//    static function deleteById($id) {
-//        $pdo = DB::getPDO();
-//        $params = array(
-//            ':tid' => $id
-//        );
-//        $stmt = $pdo->prepare('DELETE FROM Teacher WHERE tid = :tid');
-//        $numAffected = $stmt->execute($params);
-////        if ($numAffected == 0)
-//    }
-
     static function loadByQuery($queryProps, $start = 0, $limit = 50) {
         $searchParams = DB::objectToQueryField($queryProps);
         $queryParams = DB::objectToQueryParams($queryProps);

@@ -1,0 +1,31 @@
+{
+  "name": "test-php",
+  "version": "1.0.0",
+  "description": "Testing docker-compose with php-apache, composer, phpmyadmin",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Naphann/Test-PHP-Docker-Composer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Naphann/Test-PHP-Docker-Composer/issues"
+  },
+  "homepage": "https://github.com/Naphann/Test-PHP-Docker-Composer#readme",
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-runtime": "^6.23.0",
+    "webpack": "^2.6.1"
+  },
+  "dependencies": {
+    "vue": "^2.3.3"
+  }
+}
