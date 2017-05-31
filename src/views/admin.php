@@ -10,6 +10,7 @@
 <body>
 <div class="container" id="console-app">
     <h1>This is Admin pages</h1>
+    <app></app>
     {{ message }}
 </div>
 <script src="/static/dist/admin-bundle.js"></script>

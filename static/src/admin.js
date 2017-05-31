@@ -1,14 +1,20 @@
 import Vue from 'vue'
+import App from './app.vue'
 
-
+// new Vue({
+//   el: '#console-app',
+//   data: {
+//     message: "hello world"
+//   }
+// });
 
 new Vue({
   el: '#console-app',
-  data: {
-    teachers: []
+  components: {
+    App
   },
-  methods: {
-
+  data: {
+    message: "hello world"
   }
 });
 

@@ -8,7 +8,7 @@ module.exports = {
     detail: './static/src/detail.js'
   },
   output: {
-    path: path.resolve(__dirname, '/static/dist'),
+    path: path.resolve(__dirname, 'static/dist'),
     filename: '[name]-bundle.js'
   },
   module: {
